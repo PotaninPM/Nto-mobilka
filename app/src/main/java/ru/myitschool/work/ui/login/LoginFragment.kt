@@ -13,20 +13,30 @@ import ru.myitschool.work.utils.visibleOrGone
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private var _binding: FragmentLoginBinding? = null
-    private val binding: FragmentLoginBinding get() = _binding!!
+    private val binding get() = _binding!!
 
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLoginBinding.bind(view)
+
         subscribe()
+
+        binding.login.setOnClickListener {
+            val username = binding.username.text.toString()
+            viewModel.login(username)
+        }
     }
 
     private fun subscribe() {
-        viewModel.state.collectWhenStarted(this) { state ->
-            binding.loading.visibleOrGone(state)
-        }
+//        viewModel.state.collectWhenStarted(this) { state ->
+//            binding.loading.visibleOrGone(state.isLoading)
+//            binding.error.visibleOrGone(state.error != null)
+//            if (state.error != null) {
+//                binding.error.text = state.error
+//            }
+//        }
     }
 
     override fun onDestroyView() {

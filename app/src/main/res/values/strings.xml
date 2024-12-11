@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">NTO Pass</string>
+    <string name="username_hint">Пользователь</string>
+    <string name="login_button">Логин</string>
+    <string name="error_message">Ошибка</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error">Ошибка</string>
+    <string name="refresh">Обновить</string>
 </resources>
