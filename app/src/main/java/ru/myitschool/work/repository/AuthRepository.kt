@@ -3,6 +3,7 @@ package ru.myitschool.work.repository
 import android.content.SharedPreferences
 import retrofit2.Response
 import ru.myitschool.work.api.AuthApi
+import ru.myitschool.work.api.UserApi
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(

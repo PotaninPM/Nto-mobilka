@@ -1,6 +1,7 @@
 package ru.myitschool.work.repository
 
 import android.content.SharedPreferences
+import android.util.Log
 import ru.myitschool.work.api.UserApi
 import ru.myitschool.work.core.UserData
 import javax.inject.Inject

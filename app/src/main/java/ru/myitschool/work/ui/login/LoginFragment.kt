@@ -43,7 +43,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun setupInputValidation() {
         binding.username.addTextChangedListener {
-            Log.i("INFOG", "1")
             val username = it.toString().trim()
             binding.login.isEnabled = isInputValid(username)
         }
