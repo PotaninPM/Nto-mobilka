@@ -7,15 +7,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.myitschool.work.core.MainState
 import ru.myitschool.work.core.UserData
 import ru.myitschool.work.repository.UserRepository
 import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<MainState>(MainState.Loading)
+    private val _state = MutableStateFlow<MainState>(MainState.Idle)
     val state: StateFlow<MainState> = _state.asStateFlow()
 
     fun refreshData() {
@@ -33,10 +35,4 @@ class MainViewModel(
     fun logout() {
         repository.clearUserData()
     }
-}
-
-sealed class MainState {
-    object Loading : MainState()
-    data class Success(val data: UserData) : MainState()
-    data class Error(val message: String) : MainState()
 }

@@ -17,23 +17,23 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val repository: AuthRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow(LoginState())
-    val state: StateFlow<LoginState> = _state
+    private val _state = MutableStateFlow<LoginState>(LoginState.Idle)
+    val state: StateFlow<LoginState>
+        get() = _state
 
     fun login(username: String) {
         viewModelScope.launch {
-//            _state.value = LoginState(success = true)
-            _state.value = LoginState(isLoading = true)
+            _state.value = LoginState.Loading
+
             try {
                 val response = repository.authenticate(username)
                 if (response.isSuccessful) {
-                    _state.value = LoginState(success = true)
+                    _state.value = LoginState.Success
                 } else {
-                    _state.value = LoginState(error = "Ошибка авторизации")
+                    _state.value = LoginState.Error("Error: ${response.code()}")
                 }
             } catch (e: Exception) {
-                _state.value = LoginState(success = true)
-                //_state.value = LoginState(error = e.message)
+                _state.value = LoginState.Error(e.message ?: "Unknown error")
             }
         }
     }

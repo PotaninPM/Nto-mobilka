@@ -7,7 +7,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.myitschool.work.R
+import ru.myitschool.work.core.MainState
 import ru.myitschool.work.databinding.FragmentMainBinding
+import ru.myitschool.work.ui.login.LoginDestination
+import ru.myitschool.work.ui.qr.scan.QrScanDestination
 import ru.myitschool.work.utils.collectWhenStarted
 
 @AndroidEntryPoint
@@ -29,7 +32,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun setupUI() {
         binding.logout.setOnClickListener {
             viewModel.logout()
-            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+            findNavController().navigate(LoginDestination)
         }
 
         binding.refresh.setOnClickListener {
@@ -37,7 +40,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.scan.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_qrScanFragment)
+            findNavController().navigate(QrScanDestination)
         }
     }
 
@@ -60,6 +63,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 is MainState.Loading -> {
 
                 }
+
+                MainState.Idle -> TODO() // don't care
             }
         }
     }
