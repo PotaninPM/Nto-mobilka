@@ -1,7 +1,8 @@
 package ru.myitschool.work.core
 
-data class LoginState(
-    val success: Boolean = false,
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
+sealed class LoginState {
+    data object Idle : LoginState()
+    data object Loading : LoginState()
+    data object Success : LoginState()
+    data class Error(val message: String) : LoginState()
+}

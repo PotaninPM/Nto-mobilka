@@ -6,9 +6,12 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.myitschool.work.R
+import ru.myitschool.work.core.LoginState
 import ru.myitschool.work.databinding.FragmentLoginBinding
+import ru.myitschool.work.ui.main.MainDestination
 import ru.myitschool.work.utils.collectWhenStarted
 import ru.myitschool.work.utils.visibleOrGone
 
@@ -30,6 +33,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.login.setOnClickListener {
             val username = binding.username.text.toString()
             viewModel.login(username)
+            viewModel.state.collectWhenStarted(this) { state ->
+                if (state is LoginState.Success) {
+                    findNavController().navigate(MainDestination)
+                }
+            }
         }
     }
 
@@ -42,19 +50,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun isInputValid(username: String): Boolean {
-        return username.isNotEmpty() &&
+        return username.isNotBlank() &&
                 username.length >= 3 &&
-                !username.firstOrNull()?.isDigit()!! ?: false &&
-                username.all { it.isLetterOrDigit()
-                }
+                !username.first().isDigit() &&
+                username.all { it.isLetterOrDigit() }
     }
 
     private fun subscribe() {
         viewModel.state.collectWhenStarted(this) { state ->
-            binding.loading.visibleOrGone(state.isLoading)
-            binding.error.visibleOrGone(state.error != null)
-            if (state.error != null) {
-                binding.error.text = state.error
+            binding.loading.visibleOrGone(state is LoginState.Loading)
+            binding.error.visibleOrGone(state is LoginState.Error)
+            if (state is LoginState.Error) {
+                binding.error.text = state.message
             }
         }
     }

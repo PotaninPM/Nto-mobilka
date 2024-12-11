@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.myitschool.work.api.AuthApi
+import ru.myitschool.work.api.UserApi
 import ru.myitschool.work.core.Constants
 import javax.inject.Singleton
 
@@ -29,6 +30,12 @@ object NetworkModule {
     @Singleton
     fun provideAuthApi(retrofit: Retrofit): AuthApi {
         return retrofit.create(AuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserApi(retrofit: Retrofit): UserApi {
+        return retrofit.create(UserApi::class.java)
     }
 
     @Provides
