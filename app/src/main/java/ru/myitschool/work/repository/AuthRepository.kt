@@ -14,6 +14,6 @@ class AuthRepository @Inject constructor(
     }
 
     fun saveUsername(username: String) {
-        preferences.edit().putString("username", username).apply()
+        preferences.edit().putString("login", username).apply()
     }
 }

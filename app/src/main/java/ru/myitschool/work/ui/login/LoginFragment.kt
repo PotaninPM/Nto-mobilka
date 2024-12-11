@@ -1,7 +1,9 @@
 package ru.myitschool.work.ui.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +23,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLoginBinding.bind(view)
 
+        binding.login.isEnabled = false
+        setupInputValidation()
         subscribe()
 
         binding.login.setOnClickListener {
@@ -29,14 +33,30 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
+    private fun setupInputValidation() {
+        binding.username.addTextChangedListener {
+            Log.i("INFOG", "1")
+            val username = it.toString().trim()
+            binding.login.isEnabled = isInputValid(username)
+        }
+    }
+
+    private fun isInputValid(username: String): Boolean {
+        return username.isNotEmpty() &&
+                username.length >= 3 &&
+                !username.firstOrNull()?.isDigit()!! ?: false &&
+                username.all { it.isLetterOrDigit()
+                }
+    }
+
     private fun subscribe() {
-//        viewModel.state.collectWhenStarted(this) { state ->
-//            binding.loading.visibleOrGone(state.isLoading)
-//            binding.error.visibleOrGone(state.error != null)
-//            if (state.error != null) {
-//                binding.error.text = state.error
-//            }
-//        }
+        viewModel.state.collectWhenStarted(this) { state ->
+            binding.loading.visibleOrGone(state.isLoading)
+            binding.error.visibleOrGone(state.error != null)
+            if (state.error != null) {
+                binding.error.text = state.error
+            }
+        }
     }
 
     override fun onDestroyView() {
